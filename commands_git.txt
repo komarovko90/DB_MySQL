@@ -1,0 +1,7 @@
+cd //mnt/d/Komarov/Python_project/hello/home_work
+
+git checkout --track -b lesson6 origin/lesson6 	- создание ветки lesson6 в локальном хранилище из ветки origin/lesson6 удаленного хранилища
+git push origin master HEAD:lesson6 		- загрузка ветки mster локального хранилища в ветку lesson6 удаленного хранилища
+git fetch --prune origin 			- проверка были ли удалены ветки на сервере
+
+python -m pip install requests 			- установка в питон библиотеки requests
