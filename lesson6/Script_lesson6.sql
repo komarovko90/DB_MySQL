@@ -45,6 +45,7 @@ SELECT
 
 
 -- Задача 2
+-- Сумма 10 самых молодых пользователей, которым поставили лайки
 CREATE TEMPORARY TABLE sum_likes AS(
 	SELECT COUNT(*) AS cnt, target_id
 		FROM likes
@@ -57,8 +58,34 @@ CREATE TEMPORARY TABLE sum_likes AS(
 				WHERE user_id = target_id) DESC
 		LIMIT 10
 	);
+
 select * from sum_likes;
 SELECT SUM(cnt) from sum_likes;
+DROP TABLE sum_likes;
+
+-- Сумма лайков 10 самых молодых пользователей
+use vk;
+CREATE TEMPORARY TABLE sum_likes AS(
+	SELECT 
+		id,
+		IF(EXISTS (
+			SELECT target_id 
+			FROM likes 
+			WHERE target_id = users.id AND target_type_id = 2) , 
+			(SELECT COUNT(*) 
+				FROM likes 
+				GROUP BY target_id 
+				HAVING target_id = users.id), 
+			0) AS likes2
+	FROM users
+	ORDER BY (SELECT birthday 
+		FROM profiles
+		WHERE user_id = users.id) DESC	
+	LIMIT 10);
+
+select * from sum_likes;
+SELECT SUM(likes2) from sum_likes;
+DROP TABLE sum_likes;
 
 -- Проверка
 SELECT user_id, birthday 
@@ -79,7 +106,9 @@ SELECT
 		END AS sex,	
 	COUNT(*) AS cnt 
 	FROM likes
-	GROUP BY sex;
+	GROUP BY sex
+	ORDER BY cnt DESC
+	LIMIT 1;
 
 -- Задача 4
 
