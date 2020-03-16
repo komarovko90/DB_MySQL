@@ -44,13 +44,15 @@ INSERT INTO cities (label, name) VALUES
 	('novgorod', 'Новгород'),
 	('kazan', 'Казань'),
 	('omsk', 'Омск');
-
+use air;
 SELECT 
 	id,
-	f.from_,
-	c.name AS to_
-	FROM 
-		flights AS f
+	c2.name AS from_,
+	c1.name AS to_
+	FROM flights
 		JOIN
-		cities AS c
-	ON f.to_ = c.label;
+		cities AS c1
+			ON flights.to_ = c1.label
+		JOIN 
+		cities AS c2
+			ON flights.from_ = c2.label;
